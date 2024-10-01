@@ -24,4 +24,12 @@ class UserRepositoryImpl(
     override suspend fun getUserByName(name: String): User? {
         return userDao.getUserByName(name)?.toDomainModel()
     }
+
+    override suspend fun getAllUsers(name: String): List<User> {
+        return userDao.getAllUsers(name).map { it.toDomainModel() }
+    }
+
+    override suspend fun deleteUser(name: String) {
+        userDao.delete(name)
+    }
 }

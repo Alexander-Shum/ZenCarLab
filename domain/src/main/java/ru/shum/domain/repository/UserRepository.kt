@@ -10,4 +10,8 @@ interface UserRepository {
     suspend fun isUserExists(name: String): Boolean
 
     suspend fun getUserByName(name: String): User?
+
+    suspend fun getAllUsers(name: String): List<User>
+
+    suspend fun deleteUser(name: String)
 }

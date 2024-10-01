@@ -4,7 +4,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import java.util.Calendar
 import kotlin.math.absoluteValue
 
 class DateTransformation(private val mask: String = "##/##/####") : VisualTransformation {

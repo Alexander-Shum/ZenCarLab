@@ -14,7 +14,7 @@ fun isBirthDateValid(birthDate: String): Boolean {
     val yearStr = birthDate.substring(4, 8)
 
     val day = dayStr.toIntOrNull() ?: return false
-    val month = monthStr.toIntOrNull()?.minus(1) ?: return false // Month is 0-based in Calendar
+    val month = monthStr.toIntOrNull()?.minus(1) ?: return false
     val year = yearStr.toIntOrNull() ?: return false
 
     if (day < 1 || day > 31 || month < 0 || month > 11 || year < 1900 || year > Calendar.getInstance().get(

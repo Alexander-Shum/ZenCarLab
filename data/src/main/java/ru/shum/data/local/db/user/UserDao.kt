@@ -21,15 +21,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE name = :userName AND password = :password LIMIT 1")
     suspend fun login(userName: String, password: String): UserEntity?
 
-    @Query("SELECT * FROM users")
-    fun getAllUsers(): List<UserEntity>
+    @Query("SELECT * FROM users WHERE name != :userName ORDER BY registrationDate")
+    fun getAllUsers(userName: String): List<UserEntity>
 
-    @Update
-    fun update(user: UserEntity)
-
-    @Delete
-    fun delete(user: UserEntity)
-
-    @Query("DElETE FROM users")
-    fun deleteALl()
+    @Query("DElETE FROM users WHERE name = :name")
+    fun delete(name: String)
 }

@@ -4,6 +4,7 @@ import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.shum.data.local.db.user.UsersDatabase
+import ru.shum.data.local.db.user.UsersDatabase.Companion.MIGRATION_1_2
 import ru.shum.data.local.sharedpref.AuthManager
 import ru.shum.data.repository.AuthRepositoryImpl
 import ru.shum.data.repository.UserRepositoryImpl
@@ -25,6 +26,7 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), UsersDatabase::class.java, "users_database")
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
 

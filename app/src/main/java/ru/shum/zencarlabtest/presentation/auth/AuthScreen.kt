@@ -1,18 +1,23 @@
 package ru.shum.zencarlabtest.presentation.auth
 
 import android.content.Context
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -25,7 +30,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -36,6 +43,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import org.koin.androidx.compose.koinViewModel
 import ru.shum.zencarlabtest.R
 import ru.shum.zencarlabtest.navigation.Screen
@@ -45,7 +53,6 @@ import ru.shum.zencarlabtest.util.DateTransformation
 import ru.shum.zencarlabtest.util.isBirthDateValid
 import ru.shum.zencarlabtest.util.isNameValid
 import ru.shum.zencarlabtest.util.isPasswordValid
-
 
 const val DATE_LENGTH = 8
 
@@ -69,8 +76,8 @@ fun AuthScreen(
         AuthViewModel.AuthState.RegistrationScreen -> {
             RegistrationForm(
                 context = context,
-                onRegister = { name, birthDate, password ->
-                    viewModel.registerUser(name = name, birthDate = birthDate, password = password)
+                onRegister = { name, birthDate, password, avatarUri ->
+                    viewModel.registerUser(name = name, birthDate = birthDate, password = password, avatarUri = avatarUri)
                 },
                 onSwitchToLogin = {
                     viewModel.switchToLogin()
@@ -154,18 +161,26 @@ fun LoginForm(onLogin: (String, String) -> Unit, onSwitchToRegistration: () -> U
     }
 }
 
-
 @Composable
 fun RegistrationForm(
     context: Context,
-    onRegister: (String, String, String) -> Unit,
+    onRegister: (String, String, String, Uri?) -> Unit,
     onSwitchToLogin: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var validationErrorMessage by remember { mutableStateOf<String?>(null) }
+    var avatarUri by remember { mutableStateOf<Uri?>(null) }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        uri?.let {
+            context.contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            avatarUri = it
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -225,6 +240,27 @@ fun RegistrationForm(
             })
         )
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(onClick = {
+            imagePickerLauncher.launch(PickVisualMediaRequest(
+                mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+            ))
+        }) {
+            Text(text = stringResource(R.string.select_avatar))
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        avatarUri?.let {
+            Image(
+                painter = rememberAsyncImagePainter(it),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp).clip(CircleShape),
+                contentScale = ContentScale.Crop,
+            )
+        }
+
         if (validationErrorMessage != null) {
             Text(
                 text = validationErrorMessage!!,
@@ -241,7 +277,7 @@ fun RegistrationForm(
                 !isBirthDateValid(birthDate) -> context.getString(R.string.invalid_birth_date_format)
                 !isPasswordValid(password) -> context.getString(R.string.password_must_be_at_least_6)
                 else -> {
-                    onRegister(name, birthDate, password)
+                    onRegister(name, birthDate, password, avatarUri)
                     null
                 }
             }

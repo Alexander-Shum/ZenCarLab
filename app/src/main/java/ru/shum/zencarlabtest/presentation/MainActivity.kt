@@ -10,6 +10,7 @@ import ru.shum.zencarlabtest.presentation.theme.ZenCarLabTestTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             ZenCarLabTestTheme {
