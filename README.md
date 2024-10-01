@@ -7,6 +7,7 @@ ZenCarLab - это небольшое Android-приложение, разраб
   <img src="https://github.com/user-attachments/assets/beb0de7c-956c-43e1-a155-d3d39790107b" alt="App Screenshot 2" width="300"/>
   <img src="https://github.com/user-attachments/assets/d7928252-547d-4f44-aba5-d43499802d33" alt="App Screenshot 3" width="300"/>
 </p>
+
 ## Стек технологий
 
 Проект реализован с использованием следующих технологий и библиотек:
