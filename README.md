@@ -14,7 +14,7 @@ ZenCarLab - это небольшое Android-приложение, разраб
 
 - **Kotlin Coroutines**
 - **Jetpack Compose**
-- **MVVM (Model-View-ViewModel)**
+- **MVVM + State**
 - **Room**
 - **Coil**
 - **Navigation Compose с type safety**
