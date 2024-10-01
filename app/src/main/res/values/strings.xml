@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ZenCarLabTest</string>
+    <string name="registration">Registration</string>
+    <string name="name">Name</string>
+    <string name="birth_date_dd_mm_yyyy">Birth Date (DD/MM/YYYY)</string>
+    <string name="password">Password</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="invalid_birth_date_format">Invalid birth date format</string>
+    <string name="password_must_be_at_least_6">Password must be at least 6 characters</string>
+    <string name="register">Register</string>
+    <string name="switch_to_login">Switch to Login</string>
+    <string name="login">Login</string>
+    <string name="switch_to_registration">Switch to Registration</string>
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
+    <string name="data_title">Data</string>
+    <string name="logout">Logout</string>
+    <string name="birthday">Date of Birth: %1$s</string>
+</resources>
